@@ -1,0 +1,28 @@
+inputSet:
+  name: docker-set
+  identifier: dockerset
+  orgIdentifier: default
+  projectIdentifier: HarnessCD
+  pipeline:
+    identifier: demotesting
+    stages:
+      - stage:
+          identifier: Newdemo
+          type: Deployment
+          spec:
+            service:
+              serviceInputs:
+                serviceDefinition:
+                  type: NativeHelm
+                  spec:
+                    artifacts:
+                      primary:
+                        primaryArtifactRef: dockerdemo
+            environment:
+              infrastructureDefinitions:
+                - identifier: prodkubernetes
+                  inputs:
+                    identifier: prodkubernetes
+                    type: KubernetesDirect
+                    spec:
+                      namespace: <+input>.executionInput()

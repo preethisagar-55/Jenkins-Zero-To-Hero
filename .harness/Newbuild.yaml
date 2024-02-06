@@ -1,0 +1,57 @@
+pipeline:
+  name: New-build
+  identifier: Newbuild
+  projectIdentifier: HarnessCD
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: new-deploy
+        identifier: newdeploy
+        description: ""
+        type: Deployment
+        spec:
+          deploymentType: NativeHelm
+          service:
+            serviceRef: newservice
+            serviceInputs:
+              serviceDefinition:
+                type: NativeHelm
+                spec:
+                  artifacts:
+                    primary:
+                      primaryArtifactRef: <+input>
+                      sources: <+input>
+          environment:
+            environmentRef: Newenvironment
+            deployToAll: false
+            infrastructureDefinitions:
+              - identifier: Devinfrastructure
+                inputs:
+                  identifier: Devinfrastructure
+                  type: KubernetesDirect
+                  spec:
+                    namespace: <+input>
+          execution:
+            steps:
+              - step:
+                  name: Helm Deployment
+                  identifier: helmDeployment
+                  type: HelmDeploy
+                  timeout: 10m
+                  spec:
+                    skipDryRun: false
+            rollbackSteps:
+              - step:
+                  name: Helm Rollback
+                  identifier: helmRollback
+                  type: HelmRollback
+                  timeout: 10m
+                  spec: {}
+        tags: {}
+        failureStrategies:
+          - onFailure:
+              errors:
+                - AllErrors
+              action:
+                type: StageRollback

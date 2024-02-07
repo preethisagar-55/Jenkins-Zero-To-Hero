@@ -8,7 +8,7 @@ image:
   repository: jaggu2224/myrepo
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "38"
+  tag: "49"
 
 imagePullSecrets: []
 nameOverride: ""

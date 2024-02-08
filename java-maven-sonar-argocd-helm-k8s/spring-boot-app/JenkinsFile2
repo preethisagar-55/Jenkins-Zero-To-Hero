@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        jfrog "jfrogcli"
+    }
 
     // Uncomment if Docker is needed
     /*agent {
